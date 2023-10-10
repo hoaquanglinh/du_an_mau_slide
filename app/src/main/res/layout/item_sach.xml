@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <EditText
+        android:padding="10dp"
+        android:id="@+id/edMaSach"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:hint="Mã sách"
+        android:textSize="23dp" />
+
+    <EditText
+        android:padding="10dp"
+        android:id="@+id/edTenSach"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:hint="Nhập tên  sách"
+        android:textSize="23dp" />
+
+    <EditText
+        android:padding="10dp"
+        android:id="@+id/edGiaThue"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:hint="Nhập giá thuê"
+        android:textSize="23dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <Spinner
+            android:id="@+id/spLoaiSach"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/btnSaveSach"
+            android:layout_marginTop="20dp"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Thêm"
+            android:backgroundTint="#1E88E5"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/btnCacelSaveSach"
+            android:layout_width="120dp"
+            android:layout_marginLeft="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#1E88E5"
+            android:text="Hủy"
+            android:textSize="20dp" />
+    </LinearLayout>
+</LinearLayout>
