@@ -11,7 +11,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.example.du_an_mau_slide.dao.ThuThuDAO;
 import com.example.du_an_mau_slide.fragment.frm_doanh_thu;
 import com.example.du_an_mau_slide.fragment.frm_doimk;
 import com.example.du_an_mau_slide.fragment.frm_loai_sach;
@@ -20,10 +23,14 @@ import com.example.du_an_mau_slide.fragment.frm_sach;
 import com.example.du_an_mau_slide.fragment.frm_tao_tai_khoan;
 import com.example.du_an_mau_slide.fragment.frm_thanh_vien;
 import com.example.du_an_mau_slide.fragment.frm_top10;
+import com.example.du_an_mau_slide.model.ThuThu;
 import com.google.android.material.navigation.NavigationView;
 
 public class ManHinhChinh extends AppCompatActivity {
     Fragment fragment;
+    ThuThuDAO thuThuDAO;
+    View mHeaderView;
+    TextView tvUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +50,20 @@ public class ManHinhChinh extends AppCompatActivity {
         drawerToggle.setDrawerIndicatorEnabled(true);
         drawerToggle.syncState();
         drawerLayout.addDrawerListener(drawerToggle);
+
+        Intent i = getIntent();
+        String user = i.getStringExtra("user");
+
+        if (user.equalsIgnoreCase("admin")) {
+            navigationView.getMenu().findItem(R.id.taotaikhoan).setVisible(true);
+        }
+
+        mHeaderView = navigationView.getHeaderView(0);
+        tvUser = mHeaderView.findViewById(R.id.tvUser);
+        thuThuDAO = new ThuThuDAO(this);
+        ThuThu thuThu = thuThuDAO.getID(user);
+        String username = thuThu.getHoTen();
+        tvUser.setText("Welcome " + username + "!");
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

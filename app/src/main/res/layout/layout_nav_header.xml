@@ -12,9 +12,9 @@
         android:layout_gravity="center"
         android:scaleType="fitXY"/>
     <TextView
+        android:id="@+id/tvUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Hòa Quang Linh"
         android:textSize="25dp"/>
 </LinearLayout>

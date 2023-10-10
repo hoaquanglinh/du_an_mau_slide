@@ -41,6 +41,7 @@
             <menu>
                 <item
                     android:id="@+id/taotaikhoan"
+                    android:visible="false"
                     android:icon="@drawable/taotaikhoan"
                     android:title="Tạo tài khoản"/>
                 <item
