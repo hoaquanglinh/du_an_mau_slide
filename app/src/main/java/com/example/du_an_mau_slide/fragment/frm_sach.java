@@ -2,20 +2,27 @@ package com.example.du_an_mau_slide.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -29,7 +36,13 @@ import com.example.du_an_mau_slide.model.Sach;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.nio.channels.AlreadyBoundException;
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class frm_sach extends Fragment {
     ListView lvSach;
@@ -42,11 +55,20 @@ public class frm_sach extends Fragment {
     Spinner spinner;
     Button btnSave, btnCancel;
 
+    SearchView searchView;
+
     LoaiSachSpinnerAdapter spinnerAdapter;
     ArrayList<LoaiSach> listLS;
     LoaiSachDAO loaiSachDAO;
     LoaiSach loaiSach;
     int maLoaiSach, position;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -206,5 +228,80 @@ public class frm_sach extends Fragment {
             check = -1;
         }
         return check;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.drawer_view, menu);
+        MenuItem searchItem = menu.findItem(R.id.search);
+        searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                timKiem(newText);
+                return true;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public void timKiem(String query){
+        ArrayList<Sach> list1 = new ArrayList<>();
+        String normalizedQuery = removeDiacriticalMarks(query.toLowerCase());
+        for (Sach sach: list){
+            String normalizedTenSach = removeDiacriticalMarks(sach.getTenSach().toLowerCase());
+            if(normalizedTenSach.contains(normalizedQuery)){
+                list1.add(sach);
+            }
+        }
+
+
+        adapter = new SachAdapter(getContext(), this, list1);
+        lvSach.setAdapter(adapter);
+    }
+
+    private String removeDiacriticalMarks(String string) {
+        String nfdNormalizedString = Normalizer.normalize(string, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCOMBINING_DIACRITICAL_MARKS}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
+    }
+
+    public  void tang(){
+        Collections.sort(list, new Comparator<Sach>() {
+            @Override
+            public int compare(Sach o1, Sach o2) {
+                return o1.getTenSach().compareTo(o2.getTenSach());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    public  void giam(){
+        Collections.sort(list, new Comparator<Sach>() {
+            @Override
+            public int compare(Sach o1, Sach o2) {
+                return o2.getTenSach().compareTo(o1.getTenSach());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.tang){
+            tang();
+            return true;
+        }else if(id == R.id.giam){
+            giam();
+            return true;
+        }else{
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
